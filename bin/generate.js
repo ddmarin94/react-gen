@@ -74,7 +74,8 @@ if(program.prompt) {
     }
     createDir(componentName)
     const template = type === 'statefull' ? statefull :stateless
-    writeFile(componentName, template, styleSheet)
+    const styleSheetType = styleSheet === 'none' ? false : styleSheet
+    writeFile(componentName, template, styleSheetType)
   })
 }
 

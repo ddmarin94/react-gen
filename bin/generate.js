@@ -66,7 +66,7 @@ if(program.prompt) {
       choices: ['css', 'scss', 'none']
     }
   ]).then(({myComponentName, type, styleSheet}) => {
-    if(!componentName) {
+    if(!myComponentName) {
       console.log(chalk.red('Component name required!'))
       console.log(chalk.red('Component has not been generated!'))
       return

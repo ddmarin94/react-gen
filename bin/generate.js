@@ -21,6 +21,16 @@ program
   })
   .parse(process.argv)
 
+const createDir = (componentName) => {
+  if(!fs.existsSync(`${CURRENT_DIR}/${componentName}`)) {
+    fs.mkdirSync(`${CURRENT_DIR}/${componentName}`)
+    return true
+  } else {
+    console.log(chalk.red('Error: Directory already exists'))
+    return false
+  }
+}
+
 const writeFile = (componentName, componentTemplate, styleSheet) => {
   console.log(componentTemplate)
   fs.writeFile(`${CURRENT_DIR}/${componentName}/index.js`, `${componentTemplate(componentName)}`, (err) => {
@@ -38,7 +48,6 @@ const writeFile = (componentName, componentTemplate, styleSheet) => {
 }
 
 if(program.prompt) {
-  console.log('entra')
   inquirer.prompt([
     {
       type: 'input',
@@ -63,6 +72,7 @@ if(program.prompt) {
       console.log(chalk.red('Component has not been generated!'))
       return
     }
+    createDir(componentName)
     const template = type === 'statefull' ? statefull :stateless
     writeFile(componentName, template, styleSheet)
   })
@@ -70,24 +80,14 @@ if(program.prompt) {
 
 if(program.statefull) {
   const myComponentName = capitalize(program.statefull)
-  if(!fs.existsSync(`${CURRENT_DIR}/${myComponentName}`)){
-    fs.mkdirSync(`${CURRENT_DIR}/${myComponentName}`)
-    writeFile(myComponentName, statefull, program.args[0])
-  } else {
-    console.log(chalk.red('Error: Directory already exists'))
+    createDir(myComponentName) && writeFile(myComponentName, statefull, program.args[0])
     return 
-  }
 }
 
 if(program.stateless) {
   const myComponentName = capitalize(program.stateless)
-  if(!fs.existsSync(`${CURRENT_DIR}/${myComponentName}`)){
-    fs.mkdirSync(`${CURRENT_DIR}/${myComponentName}`)
-    writeFile(myComponentName, stateless, program.args[0])
-  } else {
-    console.log(chalk.red('Error: Directory already exists'))
+    createDir(myComponentName) && writeFile(myComponentName, stateless, program.args[0])
     return 
-  }
 }
 
 

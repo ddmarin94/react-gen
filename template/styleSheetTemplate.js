@@ -1,7 +1,7 @@
 const styleSheetTemplate = (componentName) => (
 `
 .${componentName}{
-  // Do your magic :)
+  /* Do your magic :) */
 }
 `
 )

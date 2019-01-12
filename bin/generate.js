@@ -32,7 +32,6 @@ const createDir = (componentName) => {
 }
 
 const writeFile = (componentName, componentTemplate, styleSheet) => {
-  console.log(componentTemplate)
   fs.writeFile(`${CURRENT_DIR}/${componentName}/index.js`, `${componentTemplate(componentName)}`, (err) => {
     if(err) {
         return console.log(chalk.red(err));
@@ -51,7 +50,7 @@ if(program.prompt) {
   inquirer.prompt([
     {
       type: 'input',
-      name: 'componentName',
+      name: 'myComponentName',
       message: 'Introduce a component name, don\'t introduce spaces:'
     },
     {
@@ -66,16 +65,17 @@ if(program.prompt) {
       message: 'Do you need an stylesheet?',
       choices: ['css', 'scss', 'none']
     }
-  ]).then(({componentName, type, styleSheet}) => {
+  ]).then(({myComponentName, type, styleSheet}) => {
     if(!componentName) {
       console.log(chalk.red('Component name required!'))
       console.log(chalk.red('Component has not been generated!'))
       return
     }
-    createDir(componentName)
+    const componentName = capitalize(myComponentName)
     const template = type === 'statefull' ? statefull :stateless
     const styleSheetType = styleSheet === 'none' ? false : styleSheet
-    writeFile(componentName, template, styleSheetType)
+
+    createDir(componentName) && writeFile(componentName, template, styleSheetType)
   })
 }
 

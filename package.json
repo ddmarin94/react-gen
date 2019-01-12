@@ -1,5 +1,5 @@
 {
-  "name": "react-gen",
+  "name": "reacty-gen",
   "version": "1.1.0",
   "description": "",
   "bin": "./bin/generate.js",

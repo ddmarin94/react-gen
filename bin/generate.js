@@ -1,5 +1,6 @@
+#!/usr/bin/env node
+
 const program = require('commander');
-const inquirer = require('inquirer');
 const fs = require('fs')
 const {stateless} = require('../template/stateless');
 const {statefull} = require('../template/statefull');

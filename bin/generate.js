@@ -2,8 +2,9 @@
 
 const program = require('commander');
 const fs = require('fs')
-const {stateless} = require('../template/stateless');
-const {statefull} = require('../template/statefull');
+const {functional} = require('../template/functional');
+const {functionalHook} = require('../template/functionalHook');
+const {classComponent} = require('../template/classComponent');
 const {styleSheetTemplate} = require('../template/styleSheetTemplate')
 const capitalize = require('lodash.capitalize');
 const CURRENT_DIR = process.cwd()
@@ -11,13 +12,15 @@ const inquirer = require('inquirer')
 const chalk = require('chalk');
 
 program
-  .option('-l --stateless <nameComponent> <styleSheetType>', 'create stateless component')
-  .option('-f --statefull <nameComponent> <styleSheetType>', 'create statefull component')
+  .option('-l --functionalComponent <nameComponent> <styleSheetType>', 'create functional component')
+  .option('-f --classComponent <nameComponent> <styleSheetType>', 'create class component')
+  .option('-h --functionalHookComponent <nameComponent> <styleSheetType>', 'create functional Hook component')
   .option('-p --prompt, available options')
   .on('--help', () => {
     console.log('Examples:')
-    console.log('$ react-gen -stateless myComponentName', )
-    console.log('$ react-gen -statefull myComponentName')
+    console.log('$ react-gen --functionalComponent myComponentName')
+    console.log('$ react-gen --classComponent myComponentName')
+    console.log('$ react-gen --functionalHookComponent myComponentName')
   })
   .parse(process.argv)
 
@@ -31,8 +34,9 @@ const createDir = (componentName) => {
   }
 }
 
-const writeFile = (componentName, componentTemplate, styleSheet) => {
-  fs.writeFile(`${CURRENT_DIR}/${componentName}/index.js`, `${componentTemplate(componentName)}`, (err) => {
+const writeFile = (componentName, template, styleSheet) => {
+  const printTemplate = template(componentName)
+  fs.writeFile(`${CURRENT_DIR}/${componentName}/index.js`, printTemplate, (err) => {
     if(err) {
         return console.log(chalk.red(err));
     }
@@ -57,7 +61,7 @@ if(program.prompt) {
       type: 'list',
       name: 'type',
       message: 'What kind of component do you need?',
-      choices: ['statefull', 'stateless']
+      choices: ['classComponent', 'functionalComponent', 'functionalHookComponent']
     },
     {
       type: 'list',
@@ -71,24 +75,36 @@ if(program.prompt) {
       console.log(chalk.red('Component has not been generated!'))
       return
     }
+
     const componentName = capitalize(myComponentName)
-    const template = type === 'statefull' ? statefull :stateless
+    const availableTemplates = {
+      functionalComponent: functional,
+      functionalHookComponent: functionalHook,
+      classComponent: classComponent
+    }
+    const template = availableTemplates[type]
     const styleSheetType = styleSheet === 'none' ? false : styleSheet
 
     createDir(componentName) && writeFile(componentName, template, styleSheetType)
   })
 }
 
-if(program.statefull) {
-  const myComponentName = capitalize(program.statefull)
-    createDir(myComponentName) && writeFile(myComponentName, statefull, program.args[0])
+if(program.classComponent) {
+  const myComponentName = capitalize(program.classComponent)
+    createDir(myComponentName) && writeFile(myComponentName, classComponent, program.args[0])
     return 
 }
 
-if(program.stateless) {
-  const myComponentName = capitalize(program.stateless)
-    createDir(myComponentName) && writeFile(myComponentName, stateless, program.args[0])
+if(program.functionalComponent) {
+  const myComponentName = capitalize(program.functionalComponent)
+    createDir(myComponentName) && writeFile(myComponentName, functional, program.args[0])
     return 
+}
+
+if(program.functionalHookComponent) {
+  const myComponentName = capitalize(program.functionalHookComponent)
+  createDir(myComponentName) && writeFile(myComponentName, functionalHook, program.args[0])
+  return 
 }
 
 

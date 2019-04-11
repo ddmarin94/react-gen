@@ -4,6 +4,10 @@
   "description": "",
   "bin": "./bin/generate.js",
   "main": "./bin/generate.js",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/ddmarin94/react-gen.git"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

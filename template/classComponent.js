@@ -1,4 +1,4 @@
-const statefull = (componentName) => (
+const classComponent = (componentName) => (
 `import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 
@@ -17,7 +17,7 @@ class ${componentName} extends Component {
   }
 }
 
-${componentName}.displayName = ${componentName}
+${componentName}.displayName = '${componentName}'
 
 ${componentName}.propTypes = {}
 
@@ -28,4 +28,4 @@ export default ${componentName}
 `
 )
 
-exports.statefull = statefull
+exports.classComponent = classComponent

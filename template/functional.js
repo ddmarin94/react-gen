@@ -1,4 +1,4 @@
-const stateless = (componentName) => (
+const functional = (componentName) => (
   `import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -8,7 +8,7 @@ const ${componentName} = (props) => (
   </div>
 );
 
-${componentName}.displayName = ${componentName}
+${componentName}.displayName = '${componentName}'
 
 ${componentName}.propTypes = {}
 
@@ -18,4 +18,5 @@ export default ${componentName};
   `
 )
 
-exports.stateless = stateless
+
+exports.functional = functional
